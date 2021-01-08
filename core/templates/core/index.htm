@@ -1,0 +1,73 @@
+{% extends 'core/base.htm' %}
+{% block titile %}CURD Operation || Home{% endblock titile %}
+{% block body %}
+    
+    <div class="row">
+        <div class="col-md-4">
+            <form action="{% url 'home' %}" method="POST" novalidate>
+                {% csrf_token %}
+            <h4 class="alert alert-info">Add New Student</h4>
+            {% for frm in form %}
+             <div class="form-group">
+                {{frm.label_tag}}
+                 {{frm}}
+                 <span class="text-danger">
+                     {{frm.errors|striptags}}
+                 </span>
+             </div>
+            {% endfor %}
+            <button class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+        <div class="col-md-7 offset-1">
+            <h4 class="alert alert-info">Show Student Informations</h4>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% if all_user %}
+                    {% for user in all_user %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.password}}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="DeleteThis('{{user.id}}')" >Delete</button>
+                        <a class="btn btn-warning btn-sm" href="{% url 'Edit' user.id %}">Edit</a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr class="text-center">
+                      <td colspan="5"> No Data Found </td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+    
+    
+<script>
+function DeleteThis(id){
+   var conf = confirm('Are Your Sure To Delete ?')
+   if(conf){
+    $('#delRec').val(id)
+    $('#DeleFrm').submit()
+   }
+}
+
+</script>
+<form action="{% url 'DelRec'  %}" method="POST" id="DeleFrm">
+    {% csrf_token %}
+    <input type="hidden" id="delRec" name="delId">
+</form>
+{% endblock body%}

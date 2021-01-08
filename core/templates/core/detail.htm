@@ -1,0 +1,23 @@
+{% extends 'core/base.htm' %}
+{% block titile %}CURD Operation || Details {% endblock titile %}
+{% block body %}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <h4 class="alert alert-info">Update Student Informations</h4>
+       <form action="" method="post" novalidate>
+           {% csrf_token %}
+        {% for form in Frm %}
+        <div class="form-group">
+            {{form.label_tag}}
+             {{form}}
+             <span class="text-danger">
+                 {{form.errors|striptags}}
+             </span>
+         </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{% url 'home' %}" class="btn btn-info">Back</a>
+       </form>
+    </div>
+</div>
+{% endblock body%}
